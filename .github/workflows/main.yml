@@ -1,0 +1,13 @@
+name: My Workflow
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: bharat.baral@straive.com
+        run: echo "Hello, world!"
