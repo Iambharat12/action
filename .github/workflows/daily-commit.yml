@@ -1,0 +1,25 @@
+name: Daily Commit Workflow
+
+on:
+  schedule:
+    - cron: '30 14 * * *'  # Runs at 14:30 UTC daily
+  workflow_dispatch:  # Allows manual triggering
+
+jobs:
+  create-daily-commit:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        
+      - name: Create commit by bharat.baral@straive.com
+        run: |
+          echo "Daily update $(date)" >> daily-update.txt
+          git config --local user.email "bharat.baral@straive.com"
+          git config --local user.name "GitHub Actions"
+          git add daily-update.txt
+          git commit -m "Daily automated commit"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
