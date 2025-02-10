@@ -1,0 +1,33 @@
+name: Daily Repository Update
+
+on:
+  schedule:
+    - cron: "0 10 * * *"
+  workflow_dispatch:
+
+jobs:
+  update-repository:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Add a file or make a change (Append)
+        run: |
+          echo "Daily update - $(date)" >> daily_update.txt
+
+      - name: Commit changes with bharat.baral@straive.com in the name
+        run: |
+          git config --local user.email "bharat.baral@straive.com"
+          git config --local user.name "github-actions[bot]"
+          git add .
+          git commit -m "Daily update from GitHub Actions [skip ci]" || exit 0
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
